@@ -1,0 +1,114 @@
+<?php
+
+class Usuario {
+    private $conexao;
+    private $id;
+    private $nome;
+    private $email;
+    private $senha;
+    private $role; // 'admin' ou 'usuario'
+
+    public function __construct($db) {
+        $this->conexao = $db;
+    }
+
+    public function setId($id) {
+        $this->id = htmlspecialchars(strip_tags($id));
+    }
+
+    public function setNome($nome) {
+        $this->nome = htmlspecialchars(strip_tags($nome));
+    }
+
+    public function setEmail($email) {
+        $this->email = htmlspecialchars(strip_tags($email));
+    }
+
+    public function setSenha($senha) {
+        $this->senha = password_hash($senha, PASSWORD_DEFAULT); // Criptografa a senha
+    }
+
+    public function setRole($role) {
+        $this->role = htmlspecialchars(strip_tags($role));
+    }
+
+    public function create() {
+        try {
+            $query = "INSERT INTO usuarios (nome, email, senha, role) VALUES (:nome, :email, :senha, :role)";
+            $stmt = $this->conexao->prepare($query);
+
+            $stmt->bindParam(":nome", $this->nome);
+            $stmt->bindParam(":email", $this->email);
+            $stmt->bindParam(":senha", $this->senha);
+            $stmt->bindParam(":role", $this->role);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erro ao criar usuário: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function login($email, $senha) {
+        try {
+            $query = "SELECT * FROM usuarios WHERE email = :email";
+            $stmt = $this->conexao->prepare($query);
+            $stmt->bindParam(":email", $email);
+            $stmt->execute();
+
+            $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($usuario && password_verify($senha, $usuario['senha'])) {
+                return $usuario; // Retorna os dados do usuário em caso de sucesso
+            }
+
+            return false;
+        } catch (PDOException $e) {
+            error_log("Erro ao fazer login: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function read() {
+        try {
+            $query = "SELECT * FROM usuarios WHERE id = :id LIMIT 1";
+            $stmt = $this->conexao->prepare($query);
+            $stmt->bindParam(":id", $this->id);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erro ao ler usuário: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function update() {
+        try {
+            $query = "UPDATE usuarios SET nome = :nome, email = :email, role = :role WHERE id = :id";
+            $stmt = $this->conexao->prepare($query);
+
+            $stmt->bindParam(":nome", $this->nome);
+            $stmt->bindParam(":email", $this->email);
+            $stmt->bindParam(":role", $this->role);
+            $stmt->bindParam(":id", $this->id);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erro ao atualizar usuário: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function delete() {
+        try {
+            $query = "DELETE FROM usuarios WHERE id = :id";
+            $stmt = $this->conexao->prepare($query);
+            $stmt->bindParam(":id", $this->id);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Erro ao deletar usuário: " . $e->getMessage());
+            return false;
+        }
+    }
+}
+?>

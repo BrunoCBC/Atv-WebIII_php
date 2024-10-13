@@ -1,0 +1,189 @@
+/* Cores definidas */
+:root {
+    --color1: #140f07; /*cores escuras */
+    --color2: #122b56;
+    --color3: #4760b5;
+    --color4: #919efb;
+    --color5: #f4e6f6; /*cores escuras */
+
+    --color5-transparent: rgba(244, 230, 246, 0.9);
+}
+
+/* Estilos Gerais */
+html, body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body{
+    background-image: url("../images/forest.jpg");
+    background-size:100%;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+header {
+    height: 40px;
+}
+
+.main-content {
+    flex: 1;
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-box {
+    width: 80%;
+    background-color: var(--color5-transparent);
+    margin-bottom: 10px;
+    border: transparent;
+    border-radius: 50px;
+    padding: 10px;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+/* Navbar */
+.custom-navbar {
+    background-color: var(--color2);
+    min-height: 10vh;
+    max-height: fit-content;
+}
+
+.navbar-brand-custom {
+    color: var(--color4);
+}
+
+.nav-link-custom {
+    color: white;
+}
+
+.navbar-brand-custom:hover {
+    color: var(--color1);
+}
+
+.nav-link-custom:hover {
+    color: var(--color4);
+}
+
+/* Footer */
+.footer-section {
+    background-color: var(--color1);
+    padding: 10px; /* Espaço no rodapé */
+    margin-top: auto; /* Empurra o rodapé para o final */
+}
+
+.footer-text, .footer-link, .title-about, .text-about, .title-social, .text-social {
+    color: white;
+}
+
+/* Estilos da página index */
+.index {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.gnome-img {
+    max-width: 300px; /* Tamanho máximo definido */
+    width: 100%;      /* Ocupa 100% da largura disponível */
+    height: auto;     /* Mantém a proporção */
+    border: transparent;
+    border-radius: 30px;
+}
+
+.title-home, .subtitle-home {
+    text-align: center; /* Alinhamento centralizado */
+    padding-top: 20px;
+}
+
+.card-home {
+    background-color: var(--color2);
+    color: white;
+    border: 1px solid var(--color1);
+    border-radius: 10px;
+    margin: 20px; /* Margem em volta do cartão */
+}
+
+.img-card{
+    width: 260px;
+    height: 160px;
+    align-self: center;
+}
+
+/* dashboard */
+
+.btn-editar{
+    background-color: var(--color3);
+    color: var(--color5);
+    border-color: var(--color4);
+}
+
+.btn-editar:hover{
+    background-color: var(--color2);
+    color: var(--color5);
+    border-color: var(--color3);
+}
+
+/* post */
+.img-post-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.img-post{
+    height: auto;
+    width: auto;
+    max-height: 400px;
+    max-width: 70%;
+    text-align: center;
+}
+
+.like {
+    cursor: pointer;
+    color: black; /* Cor padrão */
+}
+
+.like.liked {
+    color: blue; /* Cor ao curtir */
+}
+
+.categoria-link {
+    display: block; /* Faz com que o link ocupe a linha inteira */
+    text-align: center; /* Centraliza o texto */
+    font-size: 1.5rem; /* Aumenta o tamanho da fonte */
+    font-weight: bold; /* Deixa a fonte em negrito para destacá-la */
+    margin-bottom: 10px; /* Adiciona um espaço abaixo do link */
+    color: #007bff; /* Cor do link */
+    text-decoration: none; /* Remove o sublinhado do link */
+}
+
+.categoria-link:hover {
+    text-decoration: underline; /* Adiciona um sublinhado quando o link é passado */
+}
+
+/* categoria */
+
+.categoria-box{
+    border: transparent;
+    border-radius: 30px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .card-home {
+        margin: 10px; /* Diminui a margem em telas menores */
+    }
+}
+
+.btn-primary:hover {
+    background-color: darken(var(--color4), 10%); /* Um pouco mais escuro no hover */
+}

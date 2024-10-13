@@ -1,0 +1,17 @@
+Segredos Gnomáticos
+
+*lembre=se de importar o banco no criar_tabelas*
+*Utilize o index no public para iniciar*
+
+Descrição do Projeto
+
+O Gnomos é um jornal/blog dedicado a explorar o fascinante mundo dos gnomos, suas histórias, mitos e provas de sua existência. O objetivo é criar um espaço interativo onde os leitores possam aprender, compartilhar e discutir sobre esses seres místicos que povoam o imaginário popular.
+
+Funcionalidades
+Cadastro e Login de Usuários: Permite que usuários se cadastrem e façam login no sistema para acessar conteúdo exclusivo e interagir com o blog.
+
+Gerenciamento de Postagens: Os administradores podem criar, editar e excluir postagens sobre gnomos, incluindo relatos, mitos e evidências de sua existência.
+
+Comentários: Usuários registrados podem comentar nas postagens, compartilhando suas opiniões e experiências sobre o tema.
+
+Categorias: As postagens podem ser organizadas em categorias, facilitando a navegação e a busca por conteúdos específicos.
