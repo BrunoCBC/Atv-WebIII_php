@@ -1,5 +1,6 @@
 Segredos Gnomáticos
 
+*Deixe a pasta "Gnomos" assim: htdocs/Gnomos*
 *lembre=se de importar o banco no criar_tabelas*
 *Utilize o index no public para iniciar*
 
