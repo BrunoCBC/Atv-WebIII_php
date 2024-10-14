@@ -29,23 +29,25 @@
                 echo '        <img src="/gnomos/public/images/' . htmlspecialchars($item['imagem']) . '" class="card-img-top img-card" alt="' . htmlspecialchars($item['titulo']) . '">';
                 echo '        <div class="card-body">';
                 echo '            <h5 class="card-title">' . htmlspecialchars($item['titulo']) . '</h5>';
-                
+            
                 $primeiroParagrafo = '';
                 if (preg_match('/(<p.*?>.*?<\/p>)/s', $item['conteudo'], $matches)) {
                     $primeiroParagrafo = $matches[0];
-
+            
                     $primeiroParagrafo = strip_tags($primeiroParagrafo);
                     if (strlen($primeiroParagrafo) > 100) {
                         $primeiroParagrafo = substr($primeiroParagrafo, 0, 100) . '...';
                     }
                 }
-
+            
                 echo '<div class="card-text">' . $primeiroParagrafo . '</div>';
-                echo '            <a href="../app/views/show_post.php?id=' . htmlspecialchars($item['id']) . '" class="btn btn-primary">Leia mais</a>';
+                echo '            <div class="text-center mt-2">';
+                echo '                <a href="../app/views/show_post.php?id=' . htmlspecialchars($item['id']) . '" class="btn btn-primary">Leia mais</a>';
+                echo '            </div>';
                 echo '        </div>';
                 echo '    </div>';
                 echo '</div>';
-            }
+            }            
         } else {
             echo '<div class="col-12 text-center"><p>Nenhum post encontrado.</p></div>'; // Mensagem centralizada
         }

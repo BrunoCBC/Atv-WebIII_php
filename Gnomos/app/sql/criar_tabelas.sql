@@ -1,10 +1,10 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS likes;
 DROP TABLE IF EXISTS comentarios;
 DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS categorias;
-DROP TABLE IF EXISTS likes;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -54,12 +54,12 @@ CREATE TABLE comentarios (
     post_id INT,
     usuario_id INT,
     comentario TEXT NOT NULL,
-    parent_id INT DEFAULT NULL, -- Coluna para associar respostas a comentários
+    parent_id INT DEFAULT NULL,
     status ENUM('aprovado', 'pendente') DEFAULT 'pendente',
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    FOREIGN KEY (parent_id) REFERENCES comentarios(id) ON DELETE CASCADE -- Referência a si mesmo
+    FOREIGN KEY (parent_id) REFERENCES comentarios(id) ON DELETE CASCADE
 );
 
 CREATE TABLE likes (
@@ -68,5 +68,5 @@ CREATE TABLE likes (
     usuario_id INT,
     FOREIGN KEY (comentario_id) REFERENCES comentarios(id) ON DELETE CASCADE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
-    UNIQUE (comentario_id, usuario_id)  -- Impede múltiplos likes do mesmo usuário
+    UNIQUE (comentario_id, usuario_id)
 );

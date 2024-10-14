@@ -73,7 +73,8 @@ function renderizarComentarios($comentarios, $conn, $post_id, $usuario_id, $nive
         echo "<small>" . date('d/m/Y H:i:s', strtotime($comentario['data_criacao'])) . "</small>";
         echo "<div>";
         $likedClass = $comentario['liked'] > 0 ? 'liked' : ''; // Verifica se o comentário foi curtido
-        echo "<button class='btn btn-link like $likedClass' data-id='" . $comentario['id'] . "'>👍 " . contarLikes($conn, $comentario['id']) . "</button>";
+        $emoji = $comentario['liked'] > 0 ? '❤️' : '👍'; // Define o emoji com base no estado do like
+        echo "<button class='btn btn-link like $likedClass' data-id='" . $comentario['id'] . "'>$emoji " . contarLikes($conn, $comentario['id']) . "</button>";
         echo "<button class='btn btn-link responder' data-id='" . $comentario['id'] . "'>Responder</button>";
         echo "</div>";
         echo "</div>";
@@ -140,9 +141,17 @@ include '../../public/includes/header.php';
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const usuarioLogado = <?php echo json_encode(isset($_SESSION['usuario_logado'])); ?>; // Verifica se o usuário está logado
+
     document.querySelectorAll('.responder').forEach(button => {
         button.addEventListener('click', (event) => {
             event.preventDefault(); // Impede o comportamento padrão do botão, se necessário
+
+            if (!usuarioLogado) {
+                window.location.href = '/Gnomos/public/login.php'; // Redireciona para a página de login
+                return;
+            }
+
             const comentarioId = button.getAttribute('data-id');
             const formContainer = document.querySelector(`.form-resposta-container[data-parent-id='${comentarioId}']`);
 
@@ -150,6 +159,56 @@ document.addEventListener('DOMContentLoaded', () => {
             if (formContainer) {
                 formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
             }
+        });
+    });
+
+    document.querySelectorAll('.like').forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            if (!usuarioLogado) {
+                window.location.href = '/Gnomos/public/login.php'; // Redireciona para a página de login
+                return;
+            }
+
+            let comentarioId = button.getAttribute('data-id'); // Obter o ID do comentário
+            comentarioId = Number(comentarioId); 
+
+            fetch('curtir_comentario.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ comentario_id: comentarioId }), // Enviar o ID correto
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na resposta da rede');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Resposta do servidor:', data);
+                
+                if (data.status === 'success') {
+                    // Captura o número de likes do botão
+                    const currentCount = parseInt(button.textContent.match(/\d+/)[0], 10); 
+                    const isLiked = button.classList.toggle('liked'); // Alterna a classe 'liked'
+
+                    // Atualiza a contagem de likes e o emoji
+                    if (isLiked) {
+                        button.textContent = `❤️ ${currentCount + 1}`; // Se curtiu, aumenta o contador
+                    } else {
+                        button.textContent = `👍 ${currentCount - 1}`; // Se descurtiu, diminui o contador
+                    }
+                } else {
+                    alert(`${data.message} (ID do Comentário: ${data.comentario_id})`);
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao curtir o comentário. Tente novamente.');
+            });
         });
     });
 });

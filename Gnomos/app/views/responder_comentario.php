@@ -5,12 +5,6 @@ include '../config/Banco.php';
 $banco = new Banco();
 $conn = $banco->getConexao();
 
-// Verifique se o usuário está logado
-if (!isset($_SESSION['usuario_logado'])) {
-    echo "<script>alert('Você precisa estar logado para responder.'); window.location.href='login.php';</script>";
-    exit;
-}
-
 // Obtenha os dados do comentário
 $post_id = isset($_POST['post_id']) ? (int)$_POST['post_id'] : 0;
 $parent_id = isset($_POST['parent_id']) ? (int)$_POST['parent_id'] : 0; // Mantém o parent_id para respostas
@@ -30,7 +24,6 @@ $stmt = $conn->prepare($query);
 
 try {
     $stmt->execute([$post_id, $parent_id, $usuario_id, $comentario]);
-    echo "<script>alert('Comentário enviado com sucesso!'); window.location.href='show_post.php?id=$post_id';</script>";
 } catch (PDOException $e) {
     error_log($e->getMessage());
     echo "<script>alert('Erro ao enviar o comentário: " . addslashes($e->getMessage()) . "'); window.location.href='show_post.php?id=$post_id';</script>";
