@@ -24,6 +24,7 @@ $stmt = $conn->prepare($query);
 
 try {
     $stmt->execute([$post_id, $parent_id, $usuario_id, $comentario]);
+    echo "<script>alert('Resposta adicionada com sucesso!'); window.location.href='show_post.php?id=$post_id';</script>";
 } catch (PDOException $e) {
     error_log($e->getMessage());
     echo "<script>alert('Erro ao enviar o comentário: " . addslashes($e->getMessage()) . "'); window.location.href='show_post.php?id=$post_id';</script>";
